@@ -8,36 +8,50 @@ import (
 )
 
 func main() {
-	readFile, err := os.Open("input.txt")
+	readFile, err := os.Open("sample-input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer readFile.Close()
 
 	fileScan := bufio.NewScanner(readFile)
-	sum := 0
+	// sum := 0
 
+	// for fileScan.Scan() {
+	// 	item := fileScan.Text()
+	// 	p1 := item[:len(item)/2]
+	// 	p2 := item[len(item)/2:]
+	// 	fmt.Println(p1 + " " + p2)
+	// 	rep := 0
+	// 	for _, r := range p1 {
+	// 		c1 := string(r)
+	// 		fmt.Printf("Checking: %s\n", c1)
+	// 		for _, s := range p2 {
+	// 			c2 := string(s)
+	// 			if c1 == c2 && rep == 0 {
+	// 				fmt.Printf("Found a duplicate: %s! \n", c1)
+	// 				sum += prioritySum(c2)
+	// 				rep++
+	// 			}
+	// 		}
+	// 	}
+	// }
+	// fmt.Println(sum)
+	group := []string{}
 	for fileScan.Scan() {
 		item := fileScan.Text()
-		p1 := item[:len(item)/2]
-		p2 := item[len(item)/2:]
-		fmt.Println(p1 + " " + p2)
-		rep := 0
-		for _, r := range p1 {
-			c1 := string(r)
-			fmt.Printf("Checking: %s\n", c1)
-			for _, s := range p2 {
-				c2 := string(s)
-				if c1 == c2 && rep == 0 {
-					fmt.Printf("Found a duplicate: %s! \n", c1)
-					sum += prioritySum(c2)
-					rep++
-					break
-				}
+		items := []string{item}
+		var j int
+		for i := 0; i < len(items); i += 3 {
+			j += 3
+			group = append(group, items[i])
+			if j > len(items) {
+				j = len(items)
 			}
 		}
 	}
-	fmt.Println(sum)
+	fmt.Println(group)
+
 }
 
 func prioritySum(l string) int {
