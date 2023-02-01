@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	readFile, err := os.Open("sample-input.txt")
+	readFile, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -18,6 +18,8 @@ func main() {
 
 	fileScan := bufio.NewScanner(readFile)
 	split := []string{}
+	sum := 0
+	ol := 0
 	for fileScan.Scan() {
 		item := fileScan.Text()
 		// Splits strings based on ","
@@ -30,8 +32,14 @@ func main() {
 		fmt.Println(sp1, sp2)
 		fmt.Println("------------")
 		fmt.Println(checker(sp1, sp2))
-		fmt.Println("++++++++++++")
+		fmt.Println("----")
+		fmt.Println(overlap(sp1, sp2))
+		fmt.Println("============")
+		sum += checker(sp1, sp2)
+		ol += overlap(sp1, sp2)
 	}
+	fmt.Printf("Found %d duplicates.\n", sum)
+	fmt.Printf("Found %d overlaps.\n", ol)
 
 }
 
@@ -47,6 +55,36 @@ func splitter(split []string) []int {
 	return result
 }
 
-func checker(a, b []int) bool {
-	return true
+// Finds if it overlaps at all
+func overlap(a, b []int) int {
+	firstA := a[0]
+	lastA := a[1]
+	firstB := b[0]
+	lastB := b[1]
+	c := 0
+	if firstA >= firstB && firstA <= lastB {
+		c++
+	} else if firstB >= firstA && firstB <= lastA {
+		c++
+	} else {
+		c += 0
+	}
+	return c
+}
+
+// Finds full overlaps
+func checker(a, b []int) int {
+	firstA := a[0]
+	lastA := a[1]
+	firstB := b[0]
+	lastB := b[1]
+	c := 0
+	if firstA >= firstB && lastA <= lastB {
+		c++
+	} else if firstB >= firstA && lastB <= lastA {
+		c++
+	} else {
+		c += 0
+	}
+	return c
 }
